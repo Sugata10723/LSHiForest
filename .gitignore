@@ -172,3 +172,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Dataset
+./cisc/cisc_database.csv
+./UNSW/UNSW-NB15.csv
+./NSL-KDD/KDDTrain+.txt
