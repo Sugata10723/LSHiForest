@@ -42,7 +42,7 @@ No.,Name,Type ,Description
 41,ct_srv_src,integer,No. of connections that contain the same service (14) and source address (1) in 100 connections according to the last time (26).
 42,ct_srv_dst,integer,No. of connections that contain the same service (14) and destination address (3) in 100 connections according to the last time (26).
 43,ct_dst_ltm,integer,No. of connections of the same destination address (3) in 100 connections according to the last time (26).
-44,ct_src_ ltm,integer,No. of connections of the same source address (1) in 100 connections according to the last time (26).
+44,ct_src_ltm,integer,No. of connections of the same source address (1) in 100 connections according to the last time (26).
 45,ct_src_dport_ltm,integer,No of connections of the same source address (1) and the destination port (4) in 100 connections according to the last time (26).
 46,ct_dst_sport_ltm,integer,No of connections of the same destination address (3) and the source port (2) in 100 connections according to the last time (26).
 47,ct_dst_src_ltm,integer,No of connections of the same source (1) and the destination (3) address in in 100 connections according to the last time (26).
