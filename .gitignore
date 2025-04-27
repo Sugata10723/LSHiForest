@@ -174,7 +174,11 @@ cython_debug/
 .pypirc
 
 # Dataset
-cisc/cisc_database.csv
+csic/csic_database.csv
 UNSW/UNSW-NB15.csv
+UNSW/UNDE-NB15_features.csv
 NSL-KDD/KDDTrain+.txt
 UNSW/UNSW-NB15_1.csv
+
+# .DS_Store
+.DS_Store
