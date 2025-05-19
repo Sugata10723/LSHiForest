@@ -6,6 +6,9 @@ from sklearn.metrics import roc_auc_score, roc_curve
 from collections import defaultdict
 
 class MinHash:
+    '''
+    ハッシュ関数として線形合同法(Linear Congruential Hash)を使用 
+    '''
     def __init__(self, num_hashes=3, seed=None):
         self.num_hashes = num_hashes
         rng = np.random.RandomState(seed)  
@@ -37,7 +40,7 @@ class MinHashTreeNode:
         self.is_leaf = False
         self.n_samples = 0
 
-    def fit(self, X, universe):
+    def build(self, X, universe):
         self.n_samples = len(X)
         seed = (self.random_state or 0) + self.depth + np.random.randint(10000)
         self.hasher = MinHash(num_hashes=self.num_hashes, seed=seed)
@@ -60,7 +63,7 @@ class MinHashTreeNode:
                 max_depth=self.max_depth,
                 min_samples=self.min_samples
             )
-            child.fit(group, universe)
+            child.build(group, universe)
             self.children[hval] = child
 
     def path_length(self, x):
@@ -78,7 +81,9 @@ def c_factor(n):
         return 0
     return 2 * np.log(n - 1) + 0.5772156649 - (2 * (n - 1) / n)
 
-class JLSHiForest(BaseEstimator):
+class JLSHiForest():
+    '''
+    '''
     def __init__(self, n_trees=100, max_depth=10, num_hashes=3, min_samples=5, random_state=None):
         self.n_trees = n_trees
         self.max_depth = max_depth
@@ -88,13 +93,14 @@ class JLSHiForest(BaseEstimator):
         self.trees = []
         self.universe = set() # 全空間の初期化
 
-    def row_to_set(self, row):
+    def row_to_set(self, row): # よりメモリ効率いいデータ構造にできないか？
         return set(f"{col}={row[col]}" for col in row.index)
 
     def preprocess(self, X_raw):
         return X_raw.apply(self.row_to_set, axis=1).tolist()
 
-    def fit(self, X_raw):
+    def fit(self, X_raw): # fitって何？
+        # 下準備
         X_processed = self.preprocess(X_raw)
         self.universe = set()
         for items in X_processed: # 一つのデータ行に対して
@@ -103,16 +109,16 @@ class JLSHiForest(BaseEstimator):
 
         self.trees = []
         for i in range(self.n_trees):
-            idx = np.random.choice(len(X_processed), size=min(256, len(X_processed)), replace=False)
+            idx = np.random.choice(len(X_processed), size=min(256, len(X_processed)), replace=False) # randomサンプリング, データ構造はlist？
             X_sample = [X_processed[j] for j in idx]
             tree = MinHashTreeNode(
                 num_hashes=self.num_hashes,
                 random_state=self.random_state,
                 depth=0,
                 max_depth=self.max_depth,
-                min_samples=self.min_samples
+                min_samples=self.min_samples # 最小サンプル消す
             )
-            tree.fit(X_sample, self.universe)
+            tree.build(X_sample, self.universe) # fitって何？→buildに修正
             self.trees.append(tree)
         return self
 
@@ -124,10 +130,10 @@ class JLSHiForest(BaseEstimator):
             scores[i] = np.mean(lengths)
         return scores
 
-    def predict(self, scores, threshold=None):
+    def predict(self, scores, threshold=None): # 意味をなしてない
         if threshold is None:
             threshold = np.percentile(scores, 25)
-        return (scores < threshold).astype(int)
+        return (scores < threshold).astype(int) 
 
     def plot_score_distribution(self, scores, y_true=None, bins=50):
         plt.figure(figsize=(8, 5))

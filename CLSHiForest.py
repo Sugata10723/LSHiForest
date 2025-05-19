@@ -203,7 +203,6 @@ class CLSHiForest(BaseEstimator):
         pos = nx.nx_pydot.graphviz_layout(G, prog="dot")
         labels = nx.get_node_attributes(G, 'label')
 
-        # ノードのサイズ・色をデータ数ベースで決める
         sizes = np.array(list(node_samples.values()))
         sizes_scaled = 300 + 1700 * (sizes / sizes.max())  # ノードサイズ (300〜2000くらいにスケーリング)
         colors_scaled = sizes / sizes.max()  # 色（0〜1正規化）
