@@ -1,0 +1,23 @@
+# Changelog
+
+## [1.0.0] - 2025-07-08
+
+### Added
+- Created a new `lshiforest` package to house the refactored, modular code.
+- `lshiforest/hashers.py`: Contains the different hashing implementations (`LSHHash` and `MinHash`).
+- `lshiforest/base.py`: Contains the common base classes for the forest and tree nodes (`BaseLSHiForest` and `BaseLSHiTreeNode`).
+- `lshiforest/clshiforest.py`: The implementation of `CLSHiForest`.
+- `lshiforest/minhashiforest.py`: The implementation of `MinLSHiForest`.
+- `readme.txt`: Project description, installation instructions, and a basic usage example.
+- `changelog.txt`: This file.
+
+### Changed
+- Refactored the original monolithic scripts (`CLSHiForest.py`, `JLSHiForest.py`, `MinLSHiForest.py`) into a modular package structure.
+- The `CLSHiForest`, `MinLSHiForest`, and their corresponding tree node classes now inherit from the base classes in `lshiforest/base.py`.
+- The hashing implementations (`LSHHash` and `MinHash`) are now in `lshiforest/hashers.py`.
+- The `JLSHiForest.py` and `MinLSHiForest.py` files were consolidated into `lshiforest/minhashiforest.py`.
+- Added type hints, docstrings, and input validation to all classes and methods.
+- Replaced magic numbers with named constants.
+
+### Removed
+- The old, monolithic script files (`CLSHiForest.py`, `JLSHiForest.py`, `MinLSHiForest.py`) were removed from the root directory.
